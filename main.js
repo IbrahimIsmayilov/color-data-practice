@@ -34,26 +34,60 @@ function goBtnClicked() {
 
 // MENU FUNCTIONS
 function allColors() {
+  // How to resolve this
   // Display Name and Family of All Colors
-  outputEl.innerHTML = "<h3>Display All Colors</h3>";
+  outputEl.innerHTML = '';
+  for (let i = 0; i < colorData.length; i++) {
+    outputEl.innerHTML += `<h3> ${colorData[i].name}, ${colorData[i].family} </h3>`;
+  }
 }
 
 function brightColors() {
-  // Display Name and Brightness of All Colors with a Brightness of 200 and Higher
-  outputEl.innerHTML = "<h3>Display Bright Colors</h3>";
+  // Display Name and brightness of All Colors with brightness of 200 or higher
+  outputEl.innerHTML = '';
+  for (let i = 0; i < colorData.length; i++) {
+    if (colorData[i].brightness >= 200) {
+      outputEl.innerHTML += `<h3> ${colorData[i].name}, ${colorData[i].brightness} </h3>`;
+    }
+  }
 }
 
 function redPinkFamilies() {
   // Count Colors in Red/Pink Families
-  outputEl.innerHTML = "<h3>Count Red/Pink Family Colors</h3>";
+  outputEl.innerHTML = '';
+  let countColors = 0;
+  for (let i = 0; i < colorData.length; i++) {
+    if (colorData[i].family === "Pink" || colorData[i].family === "Red") {
+      countColors++;
+    }
+    outputEl.innerHTML = `<h3> ${countColors} </h3>`;
+  }
 }
 
 function familySearch() {
   // Display Name and Family of all Colors that Match a User Provided Family Name. Also Output a Count of Colors Found.
-  outputEl.innerHTML = "<h3>Family Search</h3>";
+  outputEl.innerHTML = '';
+  let userFamily = prompt("Ay yo chooese a family");
+  let count = 0;
+  for (let i = 0; i < colorData.length; i++) {
+    if (colorData[i].family === userFamily) {
+      outputEl.innerHTML += `<h3> ${colorData[i].name}, ${colorData[i].family} </h3>`;
+      count++;
+    }
+  }
+  outputEl.innerHTML += `<h3> ${count} </h3>`;
 }
 
 function startLetterSearch() {
   // Display Name of all Colors that Match a User Provided Starting Letter. Also Output a Count of Colors Found.
-  outputEl.innerHTML = "<h3>Start Letter Search</h3>";
+  outputEl.innerHTML = '';
+  let userLetter = prompt("Ay yo chooese a letta");
+  let count = 0;
+  for (let i = 0; i < colorData.length; i++) {
+    if (colorData[i].charAt(0) === userLetter) {
+      outputEl.innerHTML += `<h3> ${colorData[i].name}</h3>`;
+      count++;
+    }
+  }
+  outputEl.innerHTML += `<h3> ${count} </h3>`;
 }
