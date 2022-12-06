@@ -84,7 +84,7 @@ function startLetterSearch() {
   let userLetter = prompt("Ay yo chooese a letta");
   let count = 0;
   for (let i = 0; i < colorData.length; i++) {
-    if (colorData[i].charAt(0) === userLetter) {
+    if (colorData[i].name[0] === userLetter) {
       outputEl.innerHTML += `<h3> ${colorData[i].name}</h3>`;
       count++;
     }
