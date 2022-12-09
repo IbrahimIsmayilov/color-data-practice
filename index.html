@@ -1,37 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Web Colors</title>
-
+    <title>My Contacts</title>
     <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
     <link rel="stylesheet" href="style.css" />
-
-    <script defer src="main.js"></script>
   </head>
 
   <body>
-    <main>
-      <h1>Web Colors</h1>
-      <hr />
+    <h1>My Contacts - Basic GUI</h1>
+    <hr />
 
-      <p>
-        <select id="menu-select">
-          <option value="all-colors">Display All Colors...</option>
-          <option value="bright-colors">Bright Colors...</option>
-          <option value="red-pink-families">
-            Colors in Red or Pink families...
-          </option>
-          <option value="family-search">Family Search...</option>
-          <option value="start-letter-search">Start Letter Search...</option>
-        </select>
-        <button id="go-btn">Go</button>
-      </p>
+    <!-- Menu -->
+    <div>
+      <select id="menu">
+        <option value="display-all">Display All</option>
+        <option value="add">Add Contact</option>
+        <option value="remove">Remove Contact</option>
+        <option value="display-name">Display By Name</option>
+        <option value="display-country">Display by Country</option>
+        <option value ="findByEmail">findByEmail</option>
+      </select>
+      <button id="go-btn">Go</button>
+    </div>
 
-      <div id="output"></div>
-    </main>
+    <!-- Output -->
+    <div id="output"></div>
+
+    <!-- Load JavaScript -->
+    <script src="main.js"></script>
   </body>
 </html>

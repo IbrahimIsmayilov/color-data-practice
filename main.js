@@ -1,93 +1,161 @@
-// WEB COLORS START
+// My contacts Basic
 
-// HTML Variable for Output
-let outputEl = document.getElementById("output");
+// HTML Elements
+let goBtnEl = document.getElementById('go-btn');
+let menuEl = document.getElementById('menu');
+let outputEl = document.getElementById('output');
 
-// Load Color Data
-let colorData;
+// Go Btn - Menu Listener
+goBtnEl.addEventListener('click', goBtnHandler);
 
-fetch("color-data.json")
-  .then((rawData) => rawData.json())
-  .then((data) => (colorData = data));
+// Array 
+let contactsAll = loadcontactsAll();
+displayAll();
 
-// Event Listener on Go Button
-document.getElementById("go-btn").addEventListener("click", goBtnClicked);
-
-// Process Go Button Click
-function goBtnClicked() {
+function goBtnHandler() {
   // Get Menu Selection
-  let selection = document.getElementById("menu-select").value;
+  let selection = menuEl.value;
 
-  // Process Menu Selection
-  if (selection === "all-colors") {
-    allColors();
-  } else if (selection === "bright-colors") {
-    brightColors();
-  } else if (selection === "red-pink-families") {
-    redPinkFamilies();
-  } else if (selection === "family-search") {
-    familySearch();
-  } else if (selection === "start-letter-search") {
-    startLetterSearch();
+  if (selection === 'display-all') {
+    displaycontactsAll();
+  } else if (selection === 'add') {
+    addContact();
+  } else if (selection === 'remove') {
+    removeContact();
+  } else if (selection === 'display-name') {
+    displayByName();
+  } else if (selection === 'display-country') {
+    displayByCountry();
+  } else if (selection === 'findByEmail') {
+    findByEmail();
   }
 }
 
 // MENU FUNCTIONS
-function allColors() {
-  // How to resolve this
-  // Display Name and Family of All Colors
-  outputEl.innerHTML = '';
-  for (let i = 0; i < colorData.length; i++) {
-    outputEl.innerHTML += `<h3> ${colorData[i].name}, ${colorData[i].family} </h3>`;
+function displaycontactsAll() {
+  displayAll();
+}
+
+function addContact() {
+
+  let contactName = prompt("Enter New Contact Name: ");
+  let contactEmail = prompt("Enter New Contact Email: ");
+
+  let contactNumber = prompt("Enter New Contact Number: ");
+  let contactCountry = prompt("Enter New Contact Country");
+  contactsAll.push(newContact(contactName, contactEmail, contactNumber, contactCountry));
+
+  outputEl.innerHTML = `Task Added: ${contactName}`;
+  alert("New Contact has been added");
+  displayAll();
+  saveContact();
+
+}
+
+function removeContact() {
+  let index = +prompt("Enter contact # to remove: ");
+  if (index >=0 && index < contactsAll.length){ 
+    contactsAll.splice(index, 1);
+    alert(`Contact # ${index} has been removed`);
+    displayAll();
+    saveContact();
+  } else {
+    alert("Invalid Contact #");
   }
 }
 
-function brightColors() {
-  // Display Name and brightness of All Colors with brightness of 200 or higher
-  outputEl.innerHTML = '';
-  for (let i = 0; i < colorData.length; i++) {
-    if (colorData[i].brightness >= 200) {
-      outputEl.innerHTML += `<h3> ${colorData[i].name}, ${colorData[i].brightness} </h3>`;
-    }
+function displayByName() {
+  let nameSearch = prompt("Enter a Name to find Contact: ");
+  let divStr = "";
+  for (let i =0; i < contactsAll.length; i++){
+      if(contactsAll[i].contactName.includes(nameSearch)) {
+        divStr += `
+        <div style= 'border: 1px solid grey'>
+        <h1> ${contactsAll[i].contactName} </h1>
+        <p> ${contactsAll[i].contactEmail} </p>
+        <p> ${contactsAll[i].contactNumber} (${contactsAll[i].contactCountry})</p>
+        </div>
+        `
+      }
+  }   
+  outputEl.innerHTML = divStr;
+  
+  
+}
+
+function displayByCountry() {
+  let countrySearch = prompt("Enter a Country to find Contact: ");
+  let divStr = "";
+  for (let i =0; i < contactsAll.length; i++){
+      if(contactsAll[i].contactCountry.includes(countrySearch)) {
+        divStr += `
+        <div style='border: 1px solid grey'>
+        <h1> ${contactsAll[i].contactName} </h1>
+        <p> ${contactsAll[i].contactEmail} </p>
+        <p> ${contactsAll[i].contactNumber} (${contactsAll[i].contactCountry})</p>
+        </div>
+        `
+      }
+  }   
+  outputEl.innerHTML = divStr;  
+}
+
+function findByEmail(searchEmail){
+ let searchEmail2 = prompt("Enter an Email");
+ searchEmail = searchEmail2
+ let divStr="";
+  for (let i=0; i < contactsAll.length; i++){
+    if (searchEmail === contactsAll[i].contactEmail){
+    divStr += `
+    <div style='border: 1px solid grey'>
+    <h1> ${contactsAll[i].contactName} </h1>
+    <p> ${contactsAll[i].contactEmail} </p>
+    <p> ${contactsAll[i].contactNumber} (${contactsAll[i].contactCountry})</p>
+    </div>
+    `
+  } else {
+    alert("No email found");
+  }
+    outputEl.innerHTML = divStr;
   }
 }
 
-function redPinkFamilies() {
-  // Count Colors in Red/Pink Families
-  outputEl.innerHTML = '';
-  let countColors = 0;
-  for (let i = 0; i < colorData.length; i++) {
-    if (colorData[i].family === "Pink" || colorData[i].family === "Red") {
-      countColors++;
-    }
-    outputEl.innerHTML = `<h3> ${countColors} </h3>`;
-  }
+//Helper Functions
+function newContact(contactDescription, contactEmails, contactNumbers, contactCountries){
+  return {
+    contactName: contactDescription,
+    contactEmail: contactEmails, 
+    contactNumber: contactNumbers, 
+    contactCountry: contactCountries, 
+    completed: ''
+    
+  };
 }
 
-function familySearch() {
-  // Display Name and Family of all Colors that Match a User Provided Family Name. Also Output a Count of Colors Found.
-  outputEl.innerHTML = '';
-  let userFamily = prompt("Ay yo chooese a family");
-  let count = 0;
-  for (let i = 0; i < colorData.length; i++) {
-    if (colorData[i].family === userFamily) {
-      outputEl.innerHTML += `<h3> ${colorData[i].name}, ${colorData[i].family} </h3>`;
-      count++;
-    }
-  }
-  outputEl.innerHTML += `<h3> ${count} </h3>`;
+function getContactHTMLStr(info,i){
+  return `
+  <div>
+   <h2>${i}: ${info.contactName} </h2>
+   <p>${info.contactEmail}</p>
+   <p>${info.contactNumber} (${info.contactCountry})
+  </div>
+  `;
 }
 
-function startLetterSearch() {
-  // Display Name of all Colors that Match a User Provided Starting Letter. Also Output a Count of Colors Found.
-  outputEl.innerHTML = '';
-  let userLetter = prompt("Ay yo chooese a letta");
-  let count = 0;
-  for (let i = 0; i < colorData.length; i++) {
-    if (colorData[i].name[0] === userLetter) {
-      outputEl.innerHTML += `<h3> ${colorData[i].name}</h3>`;
-      count++;
-    }
+function displayAll(){
+  let outputStr = '';
+  for (let i=0; i< contactsAll.length;i++){
+     outputStr += getContactHTMLStr(contactsAll[i],i);
   }
-  outputEl.innerHTML += `<h3> ${count} </h3>`;
+  outputEl.innerHTML = outputStr;
+} 
+
+function saveContact(){
+  localStorage.setItem('contactsAll', JSON.stringify(contactsAll));
 }
+
+function loadcontactsAll(){
+  let contactsAllStr = localStorage.getItem('contactsAll');
+  return JSON.parse(contactsAllStr) ?? [];
+}
+
